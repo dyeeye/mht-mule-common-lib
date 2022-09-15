@@ -7,6 +7,7 @@
 	<artifactId>common-module</artifactId>
 	<version>1.0.0</version>
 	<name>common-module</name>
+	<packaging>mule-application</packaging>
 	
 	<description>Common functionality encapsulated within (private) flows and sub-flows.</description>
 	
@@ -23,35 +24,29 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<app.runtime>4.3.0</app.runtime>
-		<mule.maven.plugin.version>3.5.1</mule.maven.plugin.version>
+		<app.runtime>4.4.0</app.runtime>
+		<mule.maven.plugin.version>3.7.1</mule.maven.plugin.version>
+		<mule.exchange.maven.plugin.version>0.0.17</mule.exchange.maven.plugin.version>
 	</properties>
 	
 	<build>
+
 		<plugins>
-			<!-- Plugin used to build jar resource -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-complier-plugin</artifactId>
-				<version>3.7.0</version>
-				<configuration>
-					<complierArgs>
-						<args>-parameters</args>
-					</complierArgs>
-				</configuration>
-			</plugin>
+		  <plugin>
+            <groupId>org.mule.tools.maven</groupId>
+            <artifactId>exchange-mule-maven-plugin</artifactId>
+            <version>${mule.exchange.maven.plugin.version}</version>
+		  </plugin>
+		  <plugin>
+            <groupId>org.mule.tools.maven</groupId>
+            <artifactId>mule-maven-plugin</artifactId>
+            <version>${mule.maven.plugin.version}</version>
+            <extensions>true</extensions>
+            <configuration>
+                <classifier>mule-plugin</classifier>
+            </configuration>
+        </plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/mule</directory>
-			</resource>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>src/main/java</directory>
-			</resource>
-		</resources>
 	</build>
 	
 	<!-- Dependencies with scope provided. Added to work well with the Anypoint Studio. They are not part of target jar file -->
@@ -59,7 +54,7 @@
 		<dependency>
 			<groupId>org.mule.connectors</groupId>
 			<artifactId>mule-http-connector</artifactId>
-			<version>1.5.24</version>
+			<version>1.7.1</version>
 			<classifier>mule-plugin</classifier>
 			<scope>provided</scope>
 		</dependency>
@@ -71,4 +66,40 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+	
+	<repositories>
+		<repository>
+			<id>mulesoft-releases</id>
+			<name>MuleSoft Repository</name>
+			<url>http://repository.mulesoft.org/releases/</url>
+			<layout>default</layout>
+		</repository>
+		<repository>
+			<!-- TODO: id identify the repository defined in settings.xml-->
+		  <id>anypoint-exchange</id>
+		  <name>Anypoint Exchange Repository</name>
+		  <url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+		  <layout>default</layout>
+		</repository>
+	</repositories>
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>mulesoft-releases</id>
+			<name>MuleSoft Repository</name>
+			<url>http://repository.mulesoft.org/releases/</url>
+			<layout>default</layout>
+		</pluginRepository>
+	</pluginRepositories>
+	
+
+	<distributionManagement>
+		<repository>
+		  <!-- TODO: id identify the repository defined in settings.xml-->
+		  <id>anypoint-exchange</id>
+		  <name>Anypoint Exchange Repository</name>
+		  <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${project.groupId}/maven</url>
+		  <layout>default</layout>
+		</repository>
+  </distributionManagement>
 </project>
